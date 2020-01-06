@@ -1,0 +1,31 @@
+body {
+	background-color: #272727;
+}
+
+div.card {
+	width: 30%;
+	margin: 15px 15px;
+	float: left;
+	margin-left: 0;
+}
+
+div.container{
+	width: 65%;
+}
+
+header.jumbotron{
+	margin: 0 auto;
+	width: 65%;
+}
+
+div.row{
+	display: flex;
+	flex-wrap: wrap;
+}
+
+#subtext{
+	font-size: 14px;
+	color: grey;
+	font-weight: normal;
+	margin-left: 130px;
+}

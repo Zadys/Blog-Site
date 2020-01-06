@@ -1,0 +1,13 @@
+div.container{
+	margin-top: 25px;
+	width: 50%;
+}
+
+#subtext {
+	font-size: 14px;
+	color: grey;
+}
+
+#delete{
+	display: inline;
+}
