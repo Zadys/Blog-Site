@@ -1,0 +1,39 @@
+.navbar-text #username{
+	color: #13587d;
+}
+#error, #success {
+	color: black;
+	padding: 5px;
+	text-align: center;
+}
+.btn:hover{
+	background-color: #FFD54F;
+	color: black;
+}
+.navbar-custom {
+	background-color: #FFD54F;
+	margin-bottom: 1.0em;
+}
+.container{
+	width: 45%;
+	color: white;	
+	padding: 15px;
+}
+.btn {
+	background-color: #272727;
+}
+
+/* .subtext{
+	color: #FFD54F;
+} */
+
+body {
+	background-color: #272727;
+}
+
+h3 {
+	color: #187eb5;
+}
+
+
+ 

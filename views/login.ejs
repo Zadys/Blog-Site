@@ -1,0 +1,23 @@
+<%- include("partials/header") %>
+
+
+<div class="container border rounded">
+    <form action="/login" method="POST">
+
+        <h3>Login</h3>
+        <div class="form-group">
+            <label>Enter your username</label>
+            <input type="text" class="form-control" name="username">
+        </div>
+
+        <div class="form-group">
+            <label>Enter your password</label>
+            <input type="password" class="form-control" name="password">
+        </div>
+
+        <button type="submit" class="btn btn-dark border border-white">Log in</button>
+
+    </form>
+</div>
+
+<%- include("partials/footer") %>

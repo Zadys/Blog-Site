@@ -1,0 +1,48 @@
+<%- include("../partials/header") %>
+
+<link rel="stylesheet" type="text/css" href="/stylesheets/blogs.css">
+
+
+<header class="jumbotron my-3">
+	<h1>
+		<% if(username) {%>
+		Welcome back, <%=username%>
+		<% } else { %>
+		Welcome to the blog page!
+		<% } %>
+	</h1>
+	<p> Hi there, I'm a novice web developer and this is the first serious page I've made. This is a page I made while
+		learning the ropes around
+		Node and its popular packages like Express, Passport, and Mongoose (and of course, many more). Enough about that
+		though, this is a (somewhat) functional blog page, so go ahead and sign up to join the community!</p>
+	<a class="btn btn-dark" href="/blogs/new">Create a blog</a>
+</header>
+
+<div class="container">
+
+	<div class="row">
+		<% blogs.forEach( (blog)=>{ %>
+		<div class="col-lg-4 col-md-6 col-sm-12">
+			<div class="card">
+				<div class="embed-responsive embed-responsive-4by3">
+					<img class="card-img-top embed-responsive-item" src="<%=blog.image%>">
+				</div>
+				<div class="card-body">
+					<h5 class="card-title"><%=blog.title%></h5>
+					<h6 style="font-weight: normal;" class="card-subtitle">
+						<em>by <strong><%=blog.author.username%></strong>, <%=moment(blog.published).fromNow()%></em>
+					</h6>
+					<p class="card-text"><%-blog.content.substring(0,100)%> ...</p>
+				</div>
+				<div class="card-footer text-center">
+					<a href="/blogs/<%=blog._id%>" class="btn btn-dark">Read More</a>
+				</div>
+			</div>
+
+		</div>
+		<% }); %>
+	</div>
+</div>
+
+
+<%- include("../partials/footer") %>

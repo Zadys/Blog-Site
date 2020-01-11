@@ -3,104 +3,68 @@ let express = require("express"),
 	bodyParser = require("body-parser"),
 	methodOverride = require("method-override"),
 	expressSanitizer = require("express-sanitizer"),
+	flash = require("connect-flash"),
+	User = require("./models/user"),
+	passport = require("passport"),
+	localStrategy = require("passport-local"),
+	passportLocalMongoose = require("passport-local-mongoose"),
+	seedDB = require("./seeds"),
 	app = express();
 
+let blogRoutes = require("./routes/blogs"),
+	commentRoutes = require("./routes/comments"),
+	indexRoutes = require("./routes/index");
+
+//===== EXPRESS =====//
 app.set("view engine", "ejs");
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(expressSanitizer()); //must come after body-parser
-app.use(express.static("public"));
+app.use(express.static(__dirname + "/public"));
 app.use(methodOverride("_method"));
 
+//===== MONGOOSE =====//
 mongoose.set("useNewUrlParser", true);
 mongoose.set("useUnifiedTopology", true);
+mongoose.set("useFindAndModify", false);
 mongoose.connect("mongodb://localhost/blog_db");
 
-let blogSchema = mongoose.Schema({
-	title: String,
-	author: String,
-	content: String,
-	image: {type: String, default: "https://images.unsplash.com/photo-1578040006008-a682a395e046?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=500&q=60"},
-	published: {type: Date, default: Date.now}
+app.use(flash()); // must come before Passport config
+
+app.locals.moment = require("moment");
+
+//===== PASSPORT =====//
+app.use(require("express-session")({
+	secret: "very unpredictable secret",
+	resave: false,
+	saveUninitialized: false
+}));
+app.use(passport.initialize());
+app.use(passport.session());
+
+passport.use(new localStrategy(User.authenticate()));
+passport.serializeUser(User.serializeUser());
+passport.deserializeUser(User.deserializeUser());
+
+
+
+//this is a middleware that will pass in user information on ALL routes
+app.use((req, res, next) => {
+	res.locals.currentUser = req.user; //the name after locals is what you use inside templates
+	res.locals.errorMessage = req.flash("error");
+	res.locals.successMessage = req.flash("success");
+
+	next();
 });
 
-let Blog = mongoose.model("Blog", blogSchema);
 
-app.get("/", (req, res)=>{
-	res.render("landing");
-});
+// express router things
+app.use("/blogs", blogRoutes);
+app.use("/blogs/:id/comments", commentRoutes); //make sure to {mergeParams: true} to be able to use ":id"
+app.use(indexRoutes);
 
-// INDEX route
-app.get("/blogs", (req, res)=>{
-	
-	Blog.find({}, (err, blogs)=>{
-		if(err) console.log("Error has ocurred");
-		else {
-			res.render("blogs", {blogs: blogs});
-		}
-	});
-});
 
-// NEW route
-app.get("/blogs/new", (req, res)=>{
-	res.render("new");
-});
+//seedDB();
 
-// CREATE route
-app.post("/blogs", (req, res)=>{
-	let newBlog = {
-		title: req.body.blogTitle,
-		author: req.body.authorName,
-		content: req.sanitize(req.body.blogContent)
-	}
-	
-	if(req.body.blogImage) newBlog.image = req.body.blogImage; // if the user provides an image, set it
-	
-	Blog.create(newBlog, (err, blog)=>{
-		if(err) {
-			console.log("An error ocurred trying to create a new blog");
-			res.render("new");
-		} else {
-			res.redirect("/blogs");
-		}
-	});
-});
-
-// SHOW route
-app.get("/blogs/:id", (req, res)=>{
-	Blog.findById(req.params.id, (err, blog)=>{
-		if(!err) res.render("show", {blog: blog});
-	});
-});
-
-// EDIT route
-app.get("/blogs/:id/edit", (req, res)=>{
-	Blog.findById(req.params.id, (err, blog)=>{
-		if(!err) {
-			res.render("edit", {blog: blog});
-		}
-	});
-});
-
-// UPDATE route
-app.put("/blogs/:id", (req, res)=>{
-	let updatedBlog = {
-		title: req.body.blogTitle,
-		image: req.body.blogImage,
-		content: req.sanitize(req.body.blogContent),
-	}
-	Blog.findByIdAndUpdate(req.params.id, updatedBlog, (err, blog)=>{
-		if(err) res.redirect("blogs");
-		else res.redirect(`/blogs/${req.params.id}`);
-	});
-});
-
-// DELETE route
-app.delete("/blogs/:id", (req, res)=>{
-	Blog.findByIdAndRemove(req.params.id, (err)=>{
-		if(!err) res.redirect("/blogs");
-		else res.redirect(`/blogs/${req.params.id}`);
-	});
-});
-app.listen(3000, ()=>{
+app.listen(3000, () => {
 	console.log("Blog server is running..!");
 });

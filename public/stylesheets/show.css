@@ -1,13 +1,64 @@
-div.container{
-	margin-top: 25px;
-	width: 50%;
+#blog p {
+	border-left: 5px solid #187eb5;
+	padding-left: 5px;
 }
 
-#subtext {
-	font-size: 14px;
-	color: grey;
-}
 
-#delete{
+#delete {
 	display: inline;
+}
+
+#commentBox {
+	padding-top: 0;
+	padding-bottom: 0;
+}
+
+div h3 {
+	margin-top: 5.0rem;
+}
+
+.comments {
+	margin: 15px 0;
+}
+
+.container{
+	width: 63%;
+}
+
+.btn-success{
+	color: #FFD54F;
+}
+
+.btn-danger{
+	color: #FFD54F;
+}
+
+small span {
+	color: white;
+}
+
+hr {
+	background-color: #FFD54F;
+	padding: 1px;
+}
+
+h1 {
+	color: #187eb5;
+}
+
+h3 {
+	color: white;
+}
+ 
+form {
+	display: inline;
+}
+small{
+	margin: 0;
+}
+span{
+	float: right;
+}
+p{
+	margin-top: 15px;
 }

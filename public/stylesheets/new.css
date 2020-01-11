@@ -2,10 +2,16 @@ p.noShow{
 	display: none;
 }
 div.container{
-	width: 40%;
-	padding: 10px;
 	margin-top: 25px;
+	color: white;
 }
 textarea.form-control{
 	height: 15.0em;
+}
+.btn-success{
+	color: #FFD54F;
+}
+
+span {
+	color: #13587d;
 }

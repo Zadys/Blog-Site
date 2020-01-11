@@ -1,0 +1,20 @@
+<%- include("../partials/header") %>
+<link rel="stylesheet" href="/stylesheets/newComment.css">
+
+<div class="container border rounded">
+
+    <form action="/blogs/<%=blogId%>/comments/<%=comment._id%>?_method=PUT" method="POST">
+        <h3>Edit comment</h3>
+
+        <div class="form-group">
+            <textarea required name="comment[text]" class="form-control"
+                value="<%=comment.text%>"><%=comment.text%></textarea>
+        </div>
+
+        <button type=" submit" class="btn btn-dark border border-white">Update</button>
+
+    </form>
+
+</div>
+
+<%- include("../partials/footer") %>

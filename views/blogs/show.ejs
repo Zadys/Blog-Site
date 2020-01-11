@@ -1,0 +1,62 @@
+<%- include("../partials/header") %>
+
+<link rel="stylesheet" type="text/css" href="/stylesheets/show.css">
+
+<div class="container border rounded" id="blog">
+	<h1><%=blog.title%></h1>
+	<small><em>by <strong><%=blog.author.username%></strong> <span><%=moment(blog.published).fromNow()%></span> </em>
+	</small>
+
+	<p><%-blog.content%></p>
+
+	<% if(currentUser) { %>
+
+	<% if( blog.author.id.equals(currentUser._id)) { %>
+	<a class="btn btn-dark border border-white" href="/blogs/<%=blog._id%>/edit">Edit</a>
+	<form action="/blogs/<%=blog._id%>?_method=DELETE" method="POST" id="delete">
+		<button type="submit" class="btn btn-dark border border-white">Delete</button>
+	</form>
+	<% } %>
+	<% } %>
+	<a class="btn btn-dark border border-white" href="/blogs/<%=blog._id%>/comments/new">Reply</a>
+</div>
+
+
+
+
+
+
+<div class="container">
+	<% if(blog.comments.length === 0) { %>
+	No one has anything to say about this yet :(
+	<% }%>
+</div>
+
+<% if(blog.comments.length > 0) {%>
+<div class="container">
+	<h3>Comments</h3>
+</div>
+<div id="commentBox" class="container border rounded">
+	<% let commentCount = 0; %>
+	<% blog.comments.forEach( (comment)=>{ %>
+	<div class="comments">
+		<% commentCount++; %>
+		<small><strong><%=comment.author.username%></strong> said
+			<span><%=moment(comment.published).fromNow()%></span></small>
+		<p class="comment-body"><%-comment.text%></p>
+		<% if(currentUser && comment.author.id.equals(currentUser._id)) { %>
+		<a href="/blogs/<%=blog._id%>/comments/<%=comment._id%>/edit"
+			class="btn btn-sm btn-dark border border-white">Edit</a>
+		<form action="/blogs/<%=blog._id%>/comments/<%=comment._id%>?_method=DELETE" method="POST">
+			<input type="submit" class="btn btn-sm btn-dark border border-white" value="Delete">
+		</form>
+		<% } %>
+	</div>
+	<% if(commentCount != blog.comments.length) { %>
+	<hr>
+	<%	} %>
+	<% }); %>
+	<% } %>
+</div>
+
+<%- include("../partials/footer") %>

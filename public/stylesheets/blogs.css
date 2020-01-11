@@ -1,31 +1,31 @@
-body {
-	background-color: #272727;
-}
-
-div.card {
-	width: 30%;
-	margin: 15px 15px;
-	float: left;
-	margin-left: 0;
-}
-
-div.container{
+.container{
+	margin: auto;
 	width: 65%;
+	padding: 0;
+	color: black;
+}
+.card{
+	margin-bottom: 16px;
 }
 
-header.jumbotron{
-	margin: 0 auto;
+a .btn-dark{
+	margin: 0;
+	display: inline-block;
+}
+
+.jumbotron{
+	margin:0 auto;
 	width: 65%;
+	background-color: #187eb5;
 }
 
-div.row{
-	display: flex;
-	flex-wrap: wrap;
+
+img .card-image-top{
+    object-fit: cover;
 }
 
-#subtext{
-	font-size: 14px;
-	color: grey;
-	font-weight: normal;
-	margin-left: 130px;
+span{
+	float: right;
 }
+
+
